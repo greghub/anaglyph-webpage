@@ -1,0 +1,72 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<title>3D Webpage</title>
+<script type="text/javascript" src="http://code.jquery.com/jquery-2.2.0.min.js"></script>
+<script type="text/javascript" src="headtrackr.min.js"></script>
+<link href='https://fonts.googleapis.com/css?family=Open+Sans:800' rel='stylesheet' type='text/css'>
+<style type="text/css">
+	body {
+		background-image: url(pic8.jpg);
+		background-size: auto 120%;
+		background-position: -100px -100px;
+	}
+	.text {
+	    width: 490px;
+	    margin: 120px auto;
+	    font-size: 72px;
+	    font-family: 'Open Sans', sans-serif;
+	    text-transform: uppercase;
+	    word-wrap: normal;
+	    text-align: justify;
+	    word-break: break-all;
+	    letter-spacing: 0px;
+	    line-height: 72px;
+	    color: white;
+	}
+	#inputVideo {
+		position: absolute;
+		left: 0;
+		top: 0;
+		width: 200px;
+	}
+</style>
+</head>
+<body>
+	<div class="text">Innovation is a new idea, more effective device or process</div>
+	<div class="pointer">4141</div>
+	<canvas id="inputCanvas" width="320" height="240" style="display:none"></canvas>
+	<video id="inputVideo" autoplay loop></video>
+	<button onclick="htracker.stop()">Stop</button>
+	<button onclick="htracker.start()">Resume</button>
+</body>
+<script type="text/javascript">
+$(document).ready(function(){
+	var w = $(document).width();
+	var h = $(document).height();
+	var x, y;
+	$(".text").css('text-shadow', '-4px 0 rgba(255,0,0,1), 4px 0 rgba(0,255,255,1)');
+	$(document).mousemove(function(event){
+	});
+})  
+var videoInput = document.getElementById('inputVideo');
+var canvasInput = document.getElementById('inputCanvas');
+
+var htracker = new headtrackr.Tracker({ui : false});
+htracker.init(videoInput, canvasInput);
+htracker.start();
+document.addEventListener('headtrackingEvent', 
+  function (event) {
+	x = event.x;
+	y = event.y;
+	if(x<-4) x = -4;
+	else if(x>4) x = 4;
+	if(y<-2) y = -2;
+	else if(y>2) y = 2;
+    $(".pointer").text(x);
+    $(".text").css('text-shadow',  (0-x) + 'px '+ (0-y) +'px rgba(255,0,0,1), ' + x + 'px ' + y + 'px rgba(0,255,255,1)');
+    $("body").css('background-position',  (-100+25*x) + 'px '+ (-100-25*y) + 'px');
+  }
+);
+</script>
+</html>
